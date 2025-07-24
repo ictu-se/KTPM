@@ -11,7 +11,7 @@ Bộ môn Công nghệ Phần mềm, trực thuộc Khoa Công nghệ Thông tin
 Bên cạnh đó, Bộ môn chịu trách nhiệm hướng dẫn thực tập và đồ án tốt nghiệp cho các sinh viên đăng ký theo học ngành Kỹ thuật phần mềm.
 
 ## 📊 Xem chương trình đào tạo chi tiết
-**[🔗 Mở Gantt Chart - Chương trình Đào tạo](https://ictu-software-engineering.github.io/KTPM/KTPM.html)**  
+**[🔗 Chương trình Đào tạo KTPM](https://ictu-software-engineering.github.io/KTPM/KTPM.html)**  
 *Click vào link trên để xem timeline và thông tin chi tiết các môn học trong chương trình đào tạo*
 
 **Hoặc xem file HTML trực tiếp:**  
