@@ -65,7 +65,7 @@
         }
 
         .gantt-svg {
-            min-width: 1200px;
+            min-width: 1300px;
         }
 
         .axis {
@@ -386,7 +386,7 @@
         };
 
         // Dimensions
-        const margin = { top: 60, right: 50, bottom: 80, left: 250 };
+        const margin = { top: 60, right: 50, bottom: 80, left: 320 };
         const width = 1200 - margin.left - margin.right;
         const height = 600 - margin.bottom - margin.top;
 
@@ -482,10 +482,10 @@
                     .attr("stroke", "#2c3e50");
                 
                 tick.append("text")
-                    .attr("x", -10)
+                    .attr("x", -15)
                     .attr("dy", "0.32em")
                     .style("text-anchor", "end")
-                    .style("font-size", "10px")
+                    .style("font-size", "11px")
                     .style("font-weight", "bold")
                     .style("fill", colorMap[d.category])
                     .text(d.name);
@@ -496,7 +496,7 @@
             .attr("class", "axis-label")
             .attr("transform", "rotate(-90)")
             .attr("x", -height / 2)
-            .attr("y", -200)
+            .attr("y", -270)
             .style("text-anchor", "middle")
             .text("Môn học");
 
