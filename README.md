@@ -16,8 +16,6 @@ Bên cạnh đó, Bộ môn chịu trách nhiệm hướng dẫn thực tập v�
 
 *👆 Click vào ảnh để mở timeline tương tác và xem thông tin chi tiết các môn học*
 
-**Hoặc xem các link khác:**  
-🔗 [Mở Gantt Chart trực tiếp](https://ictu-software-engineering.github.io/KTPM/KTPM.html) | 📄 [Xem code HTML](https://github.com/ictu-software-engineering/KTPM/blob/main/KTPM.html)
 
 ## 👨‍💼 Lãnh đạo Bộ môn
 
