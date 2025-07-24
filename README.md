@@ -1,36 +1,40 @@
-# KTPM
+# 💻 Ngành Kỹ thuật phần mềm
 
-## Bộ môn Công nghệ Phần mềm
+## 🏛️ Bộ môn Công nghệ Phần mềm
 
-Bộ môn Công nghệ Phần mềm, trực thuộc Khoa Công nghệ Thông tin được thành lập từ năm 2001. Bộ môn Công nghệ phân mềm chịu trách nhiệm đảm nhận giảng dạy các học phần về lĩnh vực Kỹ thuật phần mềm, thuộc 3 hướng chuyên môn chính:
+Bộ môn Công nghệ Phần mềm, trực thuộc Khoa Công nghệ Thông tin được thành lập từ năm 2001. Bộ môn chịu trách nhiệm đảm nhận giảng dạy các học phần về lĩnh vực Kỹ thuật phần mềm, thuộc 3 khối kiến thức chính:
 
-- **Quy trình phát triển phần mềm**: Phân tích và quản lý yêu cầu; Công nghệ phần mềm; Phát triển phần mềm hướng đối tượng; Kiến trúc và thiết kế phần mềm, …
-- **Công nghệ, kỹ thuật lập trình**: Lập trình Java; Lập trình Java nâng cao; Công nghệ Dot NET; Lập trình cho thiết bị di động; …
-- **Kiểm thử và đảm bảo chất lượng phần mềm**: Kiểm chứng/kiểm thử phần mềm; Đảm bảo chất lượng phần mềm; Vận hành và bảo trì phần mềm; …
+- **🔄 Cơ sở ngành (42 tín chỉ)**: Lập trình hướng đối tượng, Công nghệ phát triển ứng dụng, Công nghệ phần mềm, Phát triển ứng dụng chuyên sâu
+- **⚡ Kiến thức ngành (36 tín chỉ)**: Công nghệ phần mềm cho hệ thống thông minh, Kiến trúc và thiết kế phần mềm, Lập trình cho thiết bị di động, Lập trình Java web, Kiểm thử và đảm bảo chất lượng phần mềm, Phát triển phần mềm mã nguồn mở, Vận hành và bảo trì phần mềm, Quản lý dự án phần mềm, Thiết kế giao diện phần mềm
+- **🧪 Chuyên sâu bằng Kỹ sư (30 tín chỉ)**: Quản trị dự án công nghệ thông tin và các môn học chuyên sâu khác
 
 Bên cạnh đó, Bộ môn chịu trách nhiệm hướng dẫn thực tập và đồ án tốt nghiệp cho các sinh viên đăng ký theo học ngành Kỹ thuật phần mềm.
 
-## Lãnh đạo Bộ môn
+## 📊 Xem chương trình đào tạo chi tiết
+**[🔗 Mở Gantt Chart - Chương trình Đào tạo](./KTPM.html)**  
+*Click vào link trên để xem timeline và thông tin chi tiết các môn học trong chương trình đào tạo*
 
-### Trưởng bộ môn
-- **Họ tên**: TS. Nguyễn Thế Vịnh
-- **Chức vụ**: Trưởng bộ môn
-- **Lĩnh vực nghiên cứu**: Trí tuệ nhân tạo, Lập trình hướng đối tượng, .NET…
-- **Điện thoại liên hệ**: 0944.550.550
-- **Email**: vinhnt@ictu.edu.vn
-- **Văn phòng làm việc**: Phòng 416 tầng 4 nhà C1
+## 👨‍💼 Lãnh đạo Bộ môn
 
-### Phó Trưởng bộ môn
-- **Họ tên**: TS. Tô Hữu Nguyên
-- **Chức vụ**: Phó Trưởng bộ môn
-- **Lĩnh vực nghiên cứu**: Phát triển phần mềm; Quản lý dự án, Kiểm thử, Phân tích thiết kế…
-- **Điện thoại liên hệ**: 0989.146.142
-- **Email**: thnguyen@ictu.edu.vn
-- **Văn phòng làm việc**: Phòng 416 tầng 4 nhà C1
+### 🎯 Trưởng bộ môn
+- **👤 Họ tên**: TS. Nguyễn Thế Vịnh
+- **💼 Chức vụ**: Trưởng bộ môn
+- **🔬 Lĩnh vực nghiên cứu**: Trí tuệ nhân tạo, Lập trình hướng đối tượng, .NET…
+- **📞 Điện thoại liên hệ**: 0944.550.550
+- **✉️ Email**: vinhnt@ictu.edu.vn
+- **🏢 Văn phòng làm việc**: Phòng 416 tầng 4 nhà C1
 
-## Đội ngũ cán bộ giảng viên trong bộ môn
+### 🤝 Phó Trưởng bộ môn
+- **👤 Họ tên**: TS. Tô Hữu Nguyên
+- **💼 Chức vụ**: Phó Trưởng bộ môn
+- **🔬 Lĩnh vực nghiên cứu**: Phát triển phần mềm; Quản lý dự án, Kiểm thử, Phân tích thiết kế…
+- **📞 Điện thoại liên hệ**: 0989.146.142
+- **✉️ Email**: thnguyen@ictu.edu.vn
+- **🏢 Văn phòng làm việc**: Phòng 416 tầng 4 nhà C1
 
-| STT | Họ và tên | Chức vụ | Nhiệm vụ | Số điện thoại | Email liên hệ |
+## 👥 Đội ngũ cán bộ giảng viên trong bộ môn
+
+| STT | 👤 Họ và tên | 💼 Chức vụ | 📋 Nhiệm vụ | 📞 Số điện thoại | ✉️ Email liên hệ |
 |-----|-----------|---------|----------|---------------|---------------|
 | 1 | TS.Nguyễn Thế Vịnh | Trưởng Bộ môn | Quản lý các hoạt động về xây dựng ngành KTPM | 0944.550.550 | vinhnt@ictu.edu.vn |
 | 2 | TS. Tô Hữu Nguyên | Phó Trưởng Bộ môn | Quản lý các hoạt động chuyên môn ngành KTPM | 0989.146.142 | thnguyen@ictu.edu.vn |
