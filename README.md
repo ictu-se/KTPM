@@ -16,6 +16,9 @@ Bên cạnh đó, Bộ môn chịu trách nhiệm hướng dẫn thực tập v�
 
 *👆 Click vào ảnh để mở timeline tương tác và xem thông tin chi tiết các môn học*
 
+## 🔗 Link công việc
+
+[📋 Thực tập cơ sở hệ kỹ sư K20](https://ictu-software-engineering.github.io/KTPM/TTKS_K20.html)
 
 ## 👨‍💼 Lãnh đạo Bộ môn
 
