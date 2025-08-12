@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Thực tập Kỹ sư K20 - CNPM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            color: #2c3e50;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .search-box {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .teacher-section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .teacher-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .teacher-icon {
+            font-size: 1.5em;
+        }
+
+        .student-count {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-left: auto;
+        }
+
+        .students-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        .students-table th {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .students-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s ease;
+        }
+
+        .students-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .students-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .student-id {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .class-badge {
+            background: #3498db;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 2em;
+            }
+            
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .students-table {
+                font-size: 0.9em;
+            }
+            
+            .students-table th,
+            .students-table td {
+                padding: 10px 8px;
+            }
+        }
+
+        .back-to-readme {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-readme:hover {
+            background: #34495e;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+   
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🎓 Thực tập Kỹ sư K20</h1>
+            <p class="subtitle">Chuyên ngành Công nghệ Phần mềm - Sắp xếp theo Giáo viên hướng dẫn</p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-students">24</div>
+                    <div class="stat-label">Tổng sinh viên</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-teachers">11</div>
+                    <div class="stat-label">Giáo viên hướng dẫn</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Lớp (K20A, K20B)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchBox" class="search-box" placeholder="🔍 Tìm kiếm theo tên sinh viên, MSSV hoặc giáo viên...">
+        </div>
+
+        <div id="teacherSections">
+            <!-- Đoàn Ngọc Phương -->
+            <div class="teacher-section" data-teacher="Đoàn Ngọc Phương">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👨‍🏫</span>
+                    <span>Đoàn Ngọc Phương</span>
+                    <span class="student-count">2 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Bùi Đức Giang" data-id="DTC2154802010161">
+                            <td>32</td>
+                            <td class="student-id">DTC2154802010161</td>
+                            <td class="student-name">Bùi Đức Giang</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Phạm Tuấn Anh" data-id="DTC2154802010036">
+                            <td>33</td>
+                            <td class="student-id">DTC2154802010036</td>
+                            <td class="student-name">Phạm Tuấn Anh</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nguyễn Lan Oanh -->
+            <div class="teacher-section" data-teacher="Nguyễn Lan Oanh">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👩‍🏫</span>
+                    <span>Nguyễn Lan Oanh</span>
+                    <span class="student-count">2 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Ngô Hà Hải Lâm" data-id="DTC21H4802010129">
+                            <td>36</td>
+                            <td class="student-id">DTC21H4802010129</td>
+                            <td class="student-name">Ngô Hà Hải Lâm</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Lương Chí Dũng" data-id="DTC21H4802010432">
+                            <td>37</td>
+                            <td class="student-id">DTC21H4802010432</td>
+                            <td class="student-name">Lương Chí Dũng</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nguyễn Thanh Hải -->
+            <div class="teacher-section" data-teacher="Nguyễn Thanh Hải">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👨‍🏫</span>
+                    <span>Nguyễn Thanh Hải</span>
+                    <span class="student-count">2 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Trần Đức Thành" data-id="DTC21H4802010069">
+                            <td>51</td>
+                            <td class="student-id">DTC21H4802010069</td>
+                            <td class="student-name">Trần Đức Thành</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Nguyễn Văn Tiệp" data-id="DTC2154802010618">
+                            <td>52</td>
+                            <td class="student-id">DTC2154802010618</td>
+                            <td class="student-name">Nguyễn Văn Tiệp</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nguyễn Thế Vịnh -->
+            <div class="teacher-section" data-teacher="Nguyễn Thế Vịnh">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👨‍🏫</span>
+                    <span>Nguyễn Thế Vịnh</span>
+                    <span class="student-count">3 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Bạc Cầm Ngọc" data-id="DTC21H4802010143">
+                            <td>18</td>
+                            <td class="student-id">DTC21H4802010143</td>
+                            <td class="student-name">Bạc Cầm Ngọc</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Liêu Xuân Nghĩa" data-id="DTC2154802010449">
+                            <td>19</td>
+                            <td class="student-id">DTC2154802010449</td>
+                            <td class="student-name">Liêu Xuân Nghĩa</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Dương Ngọc Long" data-id="DTC21H4802010409">
+                            <td>43</td>
+                            <td class="student-id">DTC21H4802010409</td>
+                            <td class="student-name">Dương Ngọc Long</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nguyễn Thị Dung -->
+            <div class="teacher-section" data-teacher="Nguyễn Thị Dung">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👩‍🏫</span>
+                    <span>Nguyễn Thị Dung</span>
+                    <span class="student-count">2 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Nguyễn Quốc Khánh" data-id="DTC21H4802010073">
+                            <td>27</td>
+                            <td class="student-id">DTC21H4802010073</td>
+                            <td class="student-name">Nguyễn Quốc Khánh</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Nguyễn Phạm Tuấn Anh" data-id="DTC21H4802010415">
+                            <td>28</td>
+                            <td class="student-id">DTC21H4802010415</td>
+                            <td class="student-name">Nguyễn Phạm Tuấn Anh</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nguyễn Thu Phương -->
+            <div class="teacher-section" data-teacher="Nguyễn Thu Phương">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👩‍🏫</span>
+                    <span>Nguyễn Thu Phương</span>
+                    <span class="student-count">2 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Ma Thành Long" data-id="DTC21H4802010311">
+                            <td>24</td>
+                            <td class="student-id">DTC21H4802010311</td>
+                            <td class="student-name">Ma Thành Long</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Ma Phúc Sáng" data-id="DTC21H4802010474">
+                            <td>25</td>
+                            <td class="student-id">DTC21H4802010474</td>
+                            <td class="student-name">Ma Phúc Sáng</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nguyễn Văn Núi -->
+            <div class="teacher-section" data-teacher="Nguyễn Văn Núi">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👨‍🏫</span>
+                    <span>Nguyễn Văn Núi</span>
+                    <span class="student-count">2 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Nguyễn Phương Nam" data-id="DTC21H4802010141">
+                            <td>39</td>
+                            <td class="student-id">DTC21H4802010141</td>
+                            <td class="student-name">Nguyễn Phương Nam</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Phạm Công Minh" data-id="DTC21H4802010335">
+                            <td>42</td>
+                            <td class="student-id">DTC21H4802010335</td>
+                            <td class="student-name">Phạm Công Minh</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Phạm Thị Thương -->
+            <div class="teacher-section" data-teacher="Phạm Thị Thương">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👩‍🏫</span>
+                    <span>Phạm Thị Thương</span>
+                    <span class="student-count">3 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Bế Hoàng Anh" data-id="DTC2154802010012">
+                            <td>22</td>
+                            <td class="student-id">DTC2154802010012</td>
+                            <td class="student-name">Bế Hoàng Anh</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Hoàng Dương Hiếu" data-id="DTC21H4802010234">
+                            <td>23</td>
+                            <td class="student-id">DTC21H4802010234</td>
+                            <td class="student-name">Hoàng Dương Hiếu</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Nguyễn Văn Bông" data-id="DTC21H4802010193">
+                            <td>44</td>
+                            <td class="student-id">DTC21H4802010193</td>
+                            <td class="student-name">Nguyễn Văn Bông</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Quách Xuân Trưởng -->
+            <div class="teacher-section" data-teacher="Quách Xuân Trưởng">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👨‍🏫</span>
+                    <span>Quách Xuân Trưởng</span>
+                    <span class="student-count">3 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Nông Quốc Hanh" data-id="DTC2154802010185">
+                            <td>34</td>
+                            <td class="student-id">DTC2154802010185</td>
+                            <td class="student-name">Nông Quốc Hanh</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Đỗ Tiến Trọng Bảo" data-id="DTC21H4802010549">
+                            <td>35</td>
+                            <td class="student-id">DTC21H4802010549</td>
+                            <td class="student-name">Đỗ Tiến Trọng Bảo</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Đinh Hoàng Trung Khánh" data-id="DTC21H4802010252">
+                            <td>49</td>
+                            <td class="student-id">DTC21H4802010252</td>
+                            <td class="student-name">Đinh Hoàng Trung Khánh</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Tô Hữu Nguyên -->
+            <div class="teacher-section" data-teacher="Tô Hữu Nguyên">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👨‍🏫</span>
+                    <span>Tô Hữu Nguyên</span>
+                    <span class="student-count">3 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Lê Bích Ngọc" data-id="DTC21H4802010422">
+                            <td>30</td>
+                            <td class="student-id">DTC21H4802010422</td>
+                            <td class="student-name">Lê Bích Ngọc</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Nguyễn Hồng Minh" data-id="DTC2154802010409">
+                            <td>31</td>
+                            <td class="student-id">DTC2154802010409</td>
+                            <td class="student-name">Nguyễn Hồng Minh</td>
+                            <td><span class="class-badge">KS CNTT K20B</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Lê Bích Thảo" data-id="DTC2154802010579">
+                            <td>45</td>
+                            <td class="student-id">DTC2154802010579</td>
+                            <td class="student-name">Lê Bích Thảo</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Vũ Đức Quang -->
+            <div class="teacher-section" data-teacher="Vũ Đức Quang">
+                <div class="teacher-header">
+                    <span class="teacher-icon">👨‍🏫</span>
+                    <span>Vũ Đức Quang</span>
+                    <span class="student-count">3 sinh viên</span>
+                </div>
+                <table class="students-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>MSSV</th>
+                            <th>Họ và tên</th>
+                            <th>Lớp</th>
+                            <th>Khóa</th>
+                            <th>Chuyên ngành</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-student="Phạm Đức Nhã" data-id="DTC2154802010469">
+                            <td>50</td>
+                            <td class="student-id">DTC2154802010469</td>
+                            <td class="student-name">Phạm Đức Nhã</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Trần Minh Quân" data-id="DTC2154802010518">
+                            <td>53</td>
+                            <td class="student-id">DTC2154802010518</td>
+                            <td class="student-name">Trần Minh Quân</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                        <tr data-student="Ma Thanh Tùng" data-id="DTC21H4802010206">
+                            <td>54</td>
+                            <td class="student-id">DTC21H4802010206</td>
+                            <td class="student-name">Ma Thanh Tùng</td>
+                            <td><span class="class-badge">KS CNTT K20A</span></td>
+                            <td>K20</td>
+                            <td>CNPM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="noResults" class="no-results">
+            🔍 Không tìm thấy kết quả nào phù hợp với từ khóa tìm kiếm.
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchBox = document.getElementById('searchBox');
+        const teacherSections = document.querySelectorAll('.teacher-section');
+        const noResults = document.getElementById('noResults');
+
+        searchBox.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            let hasResults = false;
+
+            teacherSections.forEach(section => {
+                const teacherName = section.dataset.teacher.toLowerCase();
+                const rows = section.querySelectorAll('tbody tr');
+                let hasVisibleRows = false;
+
+                if (searchTerm === '') {
+                    // Show all when search is empty
+                    section.style.display = 'block';
+                    rows.forEach(row => row.style.display = '');
+                    hasResults = true;
+                    return;
+                }
+
+                // Check if teacher name matches
+                const teacherMatches = teacherName.includes(searchTerm);
+
+                rows.forEach(row => {
+                    const studentName = row.dataset.student.toLowerCase();
+                    const studentId = row.dataset.id.toLowerCase();
+                    
+                    const matches = studentName.includes(searchTerm) || 
+                                  studentId.includes(searchTerm) || 
+                                  teacherMatches;
+                    
+                    if (matches) {
+                        row.style.display = '';
+                        hasVisibleRows = true;
+                        hasResults = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide entire section based on whether it has visible rows
+                section.style.display = hasVisibleRows ? 'block' : 'none';
+            });
+
+            // Show/hide no results message
+            noResults.style.display = hasResults ? 'none' : 'block';
+            document.getElementById('teacherSections').style.display = hasResults ? 'block' : 'none';
+        });
+
+        // Update statistics
+        function updateStats() {
+            const totalStudents = document.querySelectorAll('tbody tr').length;
+            const totalTeachers = document.querySelectorAll('.teacher-section').length;
+            
+            document.getElementById('total-students').textContent = totalStudents;
+            document.getElementById('total-teachers').textContent = totalTeachers;
+        }
+
+        // Initialize
+        updateStats();
+    </script>
+</body>
+</html>
