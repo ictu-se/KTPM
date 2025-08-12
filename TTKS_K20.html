@@ -174,6 +174,41 @@
             font-weight: 600;
         }
 
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status-project {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status-substitute {
+            background: #f39c12;
+            color: white;
+        }
+
+        .project-info {
+            max-width: 300px;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .project-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+
+        .supervisor {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
         .no-results {
             text-align: center;
             padding: 40px;
@@ -243,9 +278,13 @@
                     <div class="stat-number" id="total-teachers">11</div>
                     <div class="stat-label">Giáo viên hướng dẫn</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">2</div>
-                    <div class="stat-label">Lớp (K20A, K20B)</div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #27ae60, #229954);">
+                    <div class="stat-number">9</div>
+                    <div class="stat-label">Sinh viên làm đồ án</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Sinh viên học thay thế</div>
                 </div>
             </div>
         </div>
@@ -269,8 +308,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -279,16 +318,22 @@
                             <td class="student-id">DTC2154802010161</td>
                             <td class="student-name">Bùi Đức Giang</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Xây dựng ứng dụng di động viết blog cộng đồng trên nền tảng Android</div>
+                                <div class="supervisor">Người hướng dẫn: Vũ Văn Diện</div>
+                            </td>
                         </tr>
                         <tr data-student="Phạm Tuấn Anh" data-id="DTC2154802010036">
                             <td>33</td>
                             <td class="student-id">DTC2154802010036</td>
                             <td class="student-name">Phạm Tuấn Anh</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Xây dựng ứng dụng quản lý thư viện trên nền tảng Android</div>
+                                <div class="supervisor">Người hướng dẫn: Đỗ Đình Lực</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -308,8 +353,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -318,16 +363,16 @@
                             <td class="student-id">DTC21H4802010129</td>
                             <td class="student-name">Ngô Hà Hải Lâm</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Lương Chí Dũng" data-id="DTC21H4802010432">
                             <td>37</td>
                             <td class="student-id">DTC21H4802010432</td>
                             <td class="student-name">Lương Chí Dũng</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                     </tbody>
                 </table>
@@ -347,8 +392,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -357,16 +402,19 @@
                             <td class="student-id">DTC21H4802010069</td>
                             <td class="student-name">Trần Đức Thành</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Nguyễn Văn Tiệp" data-id="DTC2154802010618">
                             <td>52</td>
                             <td class="student-id">DTC2154802010618</td>
                             <td class="student-name">Nguyễn Văn Tiệp</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Tìm hiểu mô hình CRNN, ứng dụng xây dựng hệ thống nhận diện ký tự trên vỏ bao bì sản phẩm</div>
+                                <div class="supervisor">Người hướng dẫn: Phạm Thị Liên</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -386,8 +434,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -396,24 +444,27 @@
                             <td class="student-id">DTC21H4802010143</td>
                             <td class="student-name">Bạc Cầm Ngọc</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Liêu Xuân Nghĩa" data-id="DTC2154802010449">
                             <td>19</td>
                             <td class="student-id">DTC2154802010449</td>
                             <td class="student-name">Liêu Xuân Nghĩa</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Ứng dụng điểm danh bằng nhận diện khuôn mặt Face CHK</div>
+                                <div class="supervisor">Người hướng dẫn: Nguyễn Văn Tảo</div>
+                            </td>
                         </tr>
                         <tr data-student="Dương Ngọc Long" data-id="DTC21H4802010409">
                             <td>43</td>
                             <td class="student-id">DTC21H4802010409</td>
                             <td class="student-name">Dương Ngọc Long</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                     </tbody>
                 </table>
@@ -433,8 +484,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -443,16 +494,16 @@
                             <td class="student-id">DTC21H4802010073</td>
                             <td class="student-name">Nguyễn Quốc Khánh</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Nguyễn Phạm Tuấn Anh" data-id="DTC21H4802010415">
                             <td>28</td>
                             <td class="student-id">DTC21H4802010415</td>
                             <td class="student-name">Nguyễn Phạm Tuấn Anh</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                     </tbody>
                 </table>
@@ -472,8 +523,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -482,16 +533,19 @@
                             <td class="student-id">DTC21H4802010311</td>
                             <td class="student-name">Ma Thành Long</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Ma Phúc Sáng" data-id="DTC21H4802010474">
                             <td>25</td>
                             <td class="student-id">DTC21H4802010474</td>
                             <td class="student-name">Ma Phúc Sáng</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Xây dựng diễn đàn trực tuyến Game 2D</div>
+                                <div class="supervisor">Người hướng dẫn: Nguyễn Hiền Trinh</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -511,8 +565,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -521,16 +575,16 @@
                             <td class="student-id">DTC21H4802010141</td>
                             <td class="student-name">Nguyễn Phương Nam</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Phạm Công Minh" data-id="DTC21H4802010335">
                             <td>42</td>
                             <td class="student-id">DTC21H4802010335</td>
                             <td class="student-name">Phạm Công Minh</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                     </tbody>
                 </table>
@@ -550,8 +604,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -560,24 +614,24 @@
                             <td class="student-id">DTC2154802010012</td>
                             <td class="student-name">Bế Hoàng Anh</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Hoàng Dương Hiếu" data-id="DTC21H4802010234">
                             <td>23</td>
                             <td class="student-id">DTC21H4802010234</td>
                             <td class="student-name">Hoàng Dương Hiếu</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Nguyễn Văn Bông" data-id="DTC21H4802010193">
                             <td>44</td>
                             <td class="student-id">DTC21H4802010193</td>
                             <td class="student-name">Nguyễn Văn Bông</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                     </tbody>
                 </table>
@@ -597,8 +651,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -607,24 +661,30 @@
                             <td class="student-id">DTC2154802010185</td>
                             <td class="student-name">Nông Quốc Hanh</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Đỗ Tiến Trọng Bảo" data-id="DTC21H4802010549">
                             <td>35</td>
                             <td class="student-id">DTC21H4802010549</td>
                             <td class="student-name">Đỗ Tiến Trọng Bảo</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Phát triển ứng dụng bán hàng trên nền tảng Android</div>
+                                <div class="supervisor">Người hướng dẫn: Đỗ Đình Lực</div>
+                            </td>
                         </tr>
                         <tr data-student="Đinh Hoàng Trung Khánh" data-id="DTC21H4802010252">
                             <td>49</td>
                             <td class="student-id">DTC21H4802010252</td>
                             <td class="student-name">Đinh Hoàng Trung Khánh</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Xây dựng website quản lý quán cafe tích hợp AI Chatbot</div>
+                                <div class="supervisor">Người hướng dẫn: Lương Thị Minh Huế</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -644,8 +704,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -654,24 +714,27 @@
                             <td class="student-id">DTC21H4802010422</td>
                             <td class="student-name">Lê Bích Ngọc</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Nguyễn Hồng Minh" data-id="DTC2154802010409">
                             <td>31</td>
                             <td class="student-id">DTC2154802010409</td>
                             <td class="student-name">Nguyễn Hồng Minh</td>
                             <td><span class="class-badge">KS CNTT K20B</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                         <tr data-student="Lê Bích Thảo" data-id="DTC2154802010579">
                             <td>45</td>
                             <td class="student-id">DTC2154802010579</td>
                             <td class="student-name">Lê Bích Thảo</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Xây dựng website quản lý khách sạn Habana có tích hợp AI</div>
+                                <div class="supervisor">Người hướng dẫn: Dương Thị Quy</div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -691,8 +754,8 @@
                             <th>MSSV</th>
                             <th>Họ và tên</th>
                             <th>Lớp</th>
-                            <th>Khóa</th>
-                            <th>Chuyên ngành</th>
+                            <th>Trạng thái</th>
+                            <th>Đề tài / Người hướng dẫn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -701,24 +764,30 @@
                             <td class="student-id">DTC2154802010469</td>
                             <td class="student-name">Phạm Đức Nhã</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Xây dựng hệ thống quản lý kho hàng trên nền tảng web</div>
+                                <div class="supervisor">Người hướng dẫn: Đỗ Đình Lực</div>
+                            </td>
                         </tr>
                         <tr data-student="Trần Minh Quân" data-id="DTC2154802010518">
                             <td>53</td>
                             <td class="student-id">DTC2154802010518</td>
                             <td class="student-name">Trần Minh Quân</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-project">Đồ án</span></td>
+                            <td class="project-info">
+                                <div class="project-title">Xây dựng Website thương mại điện tử Dealz</div>
+                                <div class="supervisor">Người hướng dẫn: Vũ Vinh Quang</div>
+                            </td>
                         </tr>
                         <tr data-student="Ma Thanh Tùng" data-id="DTC21H4802010206">
                             <td>54</td>
                             <td class="student-id">DTC21H4802010206</td>
                             <td class="student-name">Ma Thanh Tùng</td>
                             <td><span class="class-badge">KS CNTT K20A</span></td>
-                            <td>K20</td>
-                            <td>CNPM</td>
+                            <td><span class="status-badge status-substitute">Học thay thế</span></td>
+                            <td class="project-info">-</td>
                         </tr>
                     </tbody>
                 </table>
