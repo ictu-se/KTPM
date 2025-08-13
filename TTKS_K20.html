@@ -228,6 +228,64 @@
             display: none;
         }
 
+        .download-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .download-title {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .download-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            text-decoration: none;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .download-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+            background: linear-gradient(135deg, #229954, #1e8449);
+        }
+
+        .download-link:active {
+            transform: translateY(0);
+        }
+
+        .download-icon {
+            font-size: 1.2em;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 5px;
@@ -320,6 +378,28 @@
             .stat-card {
                 min-width: 90px;
                 padding: 10px;
+            }
+
+            .download-section {
+                padding: 20px 15px;
+                margin: 20px 0;
+            }
+
+            .download-title {
+                font-size: 1.1em;
+                margin-bottom: 15px;
+            }
+
+            .download-links {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .download-link {
+                min-width: 160px;
+                padding: 12px 20px;
+                font-size: 1em;
             }
         }
     </style>
@@ -879,10 +959,22 @@
         <div id="noResults" class="no-results">
             🔍 Không tìm thấy kết quả nào phù hợp với từ khóa tìm kiếm.
         </div>
-        <div>
-            <!-- Link download tài liệu words -->
-            <a href="TTCS/BANG_DANG_KY.doc" class="download-link">📥 Bản đăng ký</a>
-            <a href="TTCS/DE_CUONG.doc" class="download-link">📥 Đề cương</a>
+        
+        <div class="download-section">
+            <div class="download-title">
+                <span>📁</span>
+                <span>TÀI LIỆU THAM KHẢO</span>
+            </div>
+            <div class="download-links">
+                <a href="TTCS/BANG_DANG_KY.doc" class="download-link">
+                    <span class="download-icon">📥</span>
+                    <span>Bản đăng ký</span>
+                </a>
+                <a href="TTCS/DE_CUONG.doc" class="download-link">
+                    <span class="download-icon">📥</span>
+                    <span>Đề cương</span>
+                </a>
+            </div>
         </div>
         <!-- Kế hoạch giảng dạy -->
         <div class="teaching-plan">
