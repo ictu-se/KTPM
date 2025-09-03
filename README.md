@@ -9,6 +9,8 @@ Bộ môn Công nghệ Phần mềm, trực thuộc Khoa Công nghệ Thông tin
 - **🧪 Chuyên sâu bằng Kỹ sư (30 tín chỉ)**: Quản trị dự án công nghệ thông tin và các môn học chuyên sâu khác
 
 Bên cạnh đó, Bộ môn chịu trách nhiệm hướng dẫn thực tập và đồ án tốt nghiệp cho các sinh viên đăng ký theo học ngành Kỹ thuật phần mềm.
+## Năm học 2025 - 2026
+[📋 Khối lượng giảng dạy](https://ictu-se.github.io/KTPM/2025_2026.html)
 
 ## 📊 Xem chương trình đào tạo chi tiết
 
