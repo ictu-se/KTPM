@@ -1,0 +1,453 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theo dõi Giáo viên</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f4f4f9; }
+        .container { max-width: 1200px; margin-left: 320px; padding: 2rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        th, td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        th { background-color: #e5e7eb; font-weight: bold; }
+        tr:nth-child(even) { background-color: #f9fafb; }
+        tr:hover { background-color: #f1f5f9; }
+        .sidebar { 
+            position: fixed; 
+            left: 0; 
+            top: 0; 
+            width: 300px; 
+            height: 100%; 
+            background: #ffffff; 
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1); 
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .sidebar h2 { font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar li { padding: 0.75rem; cursor: pointer; border-radius: 0.25rem; }
+        .sidebar li:hover { background-color: #e5e7eb; }
+        h1 { font-size: 2rem; font-weight: bold; text-align: center; margin-bottom: 1.5rem; color: #15803d; }
+        h2 { font-size: 1.25rem; font-weight: bold; border-bottom: 2px solid #15803d; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Danh sách Giáo viên</h2>
+        <ul id="teacherList">
+            <li onclick="scrollToSection('Bùi Anh Tú')">Bùi Anh Tú (4 lớp)</li>
+            <li onclick="scrollToSection('Hoàng Thị Cành')">Hoàng Thị Cành (4 lớp)</li>
+            <li onclick="scrollToSection('Nguyễn Lan Oanh')">Nguyễn Lan Oanh (12 lớp)</li>
+            <li onclick="scrollToSection('Nguyễn Thanh Hải')">Nguyễn Thanh Hải (12 lớp)</li>
+            <li onclick="scrollToSection('Nguyễn Thu Phương')">Nguyễn Thu Phương (13 lớp)</li>
+            <li onclick="scrollToSection('Nguyễn Thế Vịnh')">Nguyễn Thế Vịnh (11 lớp)</li>
+            <li onclick="scrollToSection('Nguyễn Thị Dung (CNPM)')">Nguyễn Thị Dung (CNPM) (13 lớp)</li>
+            <li onclick="scrollToSection('Nguyễn Văn Núi')">Nguyễn Văn Núi (3 lớp)</li>
+            <li onclick="scrollToSection('Phạm Thị Thương')">Phạm Thị Thương (5 lớp)</li>
+            <li onclick="scrollToSection('Quách Xuân Trưởng')">Quách Xuân Trưởng (8 lớp)</li>
+            <li onclick="scrollToSection('Tô Hữu Nguyên')">Tô Hữu Nguyên (6 lớp)</li>
+            <li onclick="scrollToSection('Vũ Đức Quang')">Vũ Đức Quang (8 lớp)</li>
+            <li onclick="scrollToSection('Đoàn Ngọc Phương')">Đoàn Ngọc Phương (16 lớp)</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <h1>Theo dõi Từng Giáo viên</h1>
+
+        <section id="Bùi Anh Tú">
+            <h2>Bùi Anh Tú (4 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Công nghệ .Net</td><td>ATTT K22A+HTTT K22A+MMT&amp;TTDL K22A</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22A</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>KTPM K22B</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>KTPM K22C</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Hoàng Thị Cành">
+            <h2>Hoàng Thị Cành (4 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Công nghệ phần mềm</td><td>KTPM K23B</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>KTPM K23C</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>KHMT K23A</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>KTMT K23A</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Nguyễn Lan Oanh">
+            <h2>Nguyễn Lan Oanh (12 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tự chọn 2 (Phương pháp luận lập trình)</td><td>KTPM K21A</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Tự chọn 2 (Phương pháp luận lập trình)</td><td>KTPM K21B</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Tự chọn 2 (Phương pháp luận lập trình)</td><td>KTPM K21C</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Kiểm thử và đảm bảo chất lượng phần mềm</td><td>KTPM K22A</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Kiểm thử và đảm bảo chất lượng phần mềm</td><td>KTPM K22B</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Kiểm thử và đảm bảo chất lượng phần mềm</td><td>KTPM K22C</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Cấu trúc dữ liệu và thuật toán</td><td>KTPM K23A</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Cấu trúc dữ liệu và thuật toán</td><td>KTPM K23B</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>ATTT K23A+MMT K23A+HTTT K23A</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23A</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23B</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23C</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Nguyễn Thanh Hải">
+            <h2>Nguyễn Thanh Hải (12 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21A</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21B</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21C</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22A</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22B</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22C</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22D</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22G</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22H</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22I</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>KTPM K22B</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>KTPM K22C</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Nguyễn Thu Phương">
+            <h2>Nguyễn Thu Phương (13 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Kiến trúc và thiết kế phần mềm</td><td>KTPM K21A</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Kiến trúc và thiết kế phần mềm</td><td>KTPM K21B</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Kiến trúc và thiết kế phần mềm</td><td>KTPM K21C</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Công nghệ ASP.Net)</td><td>KTPM K21A</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Công nghệ ASP.Net)</td><td>KTPM K21B</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Công nghệ ASP.Net)</td><td>KTPM K21C</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23E</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23G</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23H</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23I</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23K</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23L</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23M</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Nguyễn Thế Vịnh">
+            <h2>Nguyễn Thế Vịnh (11 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22L</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>KTPM K22A</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>KTPM K22B</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>KTPM K22C</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22G</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22H</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22I</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22K</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22L</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>KHMT K23A</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>KTMT K23A</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Nguyễn Thị Dung (CNPM)">
+            <h2>Nguyễn Thị Dung (CNPM) (13 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22B</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22C</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22D</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22E</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22G</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23C</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23D</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23N</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>KTPM K23A</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>KTPM K23B</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23M</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23N</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>KTPM K23A</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Nguyễn Văn Núi">
+            <h2>Nguyễn Văn Núi (3 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22E</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>CNTT K22M</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                    <tr><td>Phương pháp phát triển phần mềm hướng đối tượng</td><td>KTPM K22A</td><td>K22</td><td>3</td><td>1</td><td>2</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Phạm Thị Thương">
+            <h2>Phạm Thị Thương (5 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Vận hành và bảo trì phần mềm</td><td>KTPM K21B</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Vận hành và bảo trì phần mềm</td><td>KTPM K21C</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Phân tích và quản lý yêu cầu phần mềm</td><td>KTPM K22A</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Phân tích và quản lý yêu cầu phần mềm</td><td>KTPM K22B</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Phân tích và quản lý yêu cầu phần mềm</td><td>KTPM K22C</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Quách Xuân Trưởng">
+            <h2>Quách Xuân Trưởng (8 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Quản trị dự án công nghệ thông tin</td><td>CNTT-CHUNG.01</td><td>K20</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Quản trị dự án công nghệ thông tin</td><td>CNTT-CHUNG.02</td><td>K20</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Vận hành và bảo trì phần mềm</td><td>KTPM K21A</td><td>K21</td><td>3</td><td></td><td>1</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22A</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22B</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22C</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22D</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                    <tr><td>Quản lý dự án CNTT</td><td>CNTT K22E</td><td>K22</td><td>3</td><td></td><td>2</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Tô Hữu Nguyên">
+            <h2>Tô Hữu Nguyên (6 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Lập trình ứng dụng Java</td><td>KTPM K22A</td><td>K22</td><td>4</td><td>1</td><td>2</td></tr>
+                    <tr><td>Lập trình ứng dụng Java</td><td>KTPM K22B</td><td>K22</td><td>4</td><td>1</td><td>2</td></tr>
+                    <tr><td>Lập trình ứng dụng Java</td><td>KTPM K22C</td><td>K22</td><td>4</td><td>1</td><td>2</td></tr>
+                    <tr><td>Tự chọn 1 (Lập trình ứng dụng Java)</td><td>CNTT K22E</td><td>K22</td><td>4</td><td>1</td><td>2</td></tr>
+                    <tr><td>Tự chọn 1 (Lập trình ứng dụng Java)</td><td>CNTT K22G</td><td>K22</td><td>4</td><td>1</td><td>2</td></tr>
+                    <tr><td>Tự chọn 1 (Lập trình ứng dụng Java)</td><td>CNTT K22H</td><td>K22</td><td>4</td><td>1</td><td>2</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Vũ Đức Quang">
+            <h2>Vũ Đức Quang (8 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22H</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22I</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22K</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ .Net</td><td>CNTT K22M</td><td>K22</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>ATTT K23A+MMT K23A+HTTT K23A</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23A</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>CNTT K23B</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                    <tr><td>Công nghệ phát triển ứng dụng</td><td>KTPM K23C</td><td>K23</td><td>3</td><td>1</td><td>3</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="Đoàn Ngọc Phương">
+            <h2>Đoàn Ngọc Phương (16 lớp)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Môn học</th>
+                        <th>Lớp</th>
+                        <th>Khóa</th>
+                        <th>Tín chỉ</th>
+                        <th>Tín chỉ thực hành</th>
+                        <th>Học kỳ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Tự chọn 1 (Lập trình cho thiết bị di động)</td><td>KTPM K21A</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 1 (Lập trình cho thiết bị di động)</td><td>KTPM K21B</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 1 (Lập trình cho thiết bị di động)</td><td>KTPM K21C</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21D</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21E</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21G</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21H</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21I</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Tự chọn 3 (Lập trình cho thiết bị di động)</td><td>CNTT K21K</td><td>K21</td><td>3</td><td>1</td><td>1</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23D</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23E</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23G</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23H</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23I</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23K</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                    <tr><td>Công nghệ phần mềm</td><td>CNTT K23L</td><td>K23</td><td>3</td><td></td><td>3</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
