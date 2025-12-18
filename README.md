@@ -62,5 +62,5 @@ Bên cạnh đó, Bộ môn chịu trách nhiệm hướng dẫn thực tập v�
 | 16 | ThS. Đoàn Ngọc Phương | Giảng viên | Giảng dạy | 0979.479.940 | dnphuong@ictu.edu.vn |
 | 17 | ThS. Hoàng Thị Cành | Giảng viên – NCS | Giảng dạy | 0382.324.556 | htcanh@ictu.edu.vn |
 | 18 | ThS. Nguyễn Văn Việt | Giảng viên – NCS | Giảng dạy | 0912.660.246 | nvviet@ictu.edu.vn |
-
 | 19 | ThS. Võ Văn Trường | Giảng viên – NCS | Giảng dạy | 0973.563.273 | vvtruong@ictu.edu.vn |
+
