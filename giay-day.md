@@ -6,7 +6,7 @@
 | 3 | ThS. Nguyễn Thị Dung | 1.235,79 |
 | 4 | ThS. Phạm Thị Thương | 1.219,08 | 
 | 5 | TS. Tô Hữu Nguyên | 1.210,33 | 
-| 6 | TS.Nguyễn Thế Vịnh | 1.011,43 
+| 6 | TS. Nguyễn Thế Vịnh | 1.011,43 
 | 7 | ThS. Nguyễn Thu Phương | 979,53 | 
 | 8 | ThS. Trần Hải Thanh | 943,64 ||
 | 9 | TS. Quách Xuân Trưởng | 924,23 | 
