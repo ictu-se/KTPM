@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline Lộ Trình Đào Tạo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f8f9fc;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --line-solid: #cbd5e1;
+      --line-dotted: #e2e8f0;
+      --primary-color: #6366f1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .tabs-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    
+    .tab-btn {
+      padding: 12px 28px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: 2px solid var(--primary-color);
+      background: transparent;
+      color: var(--primary-color);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--primary-color);
+      color: white;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .top-info {
+        width: 100%;
+        max-width: 1600px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    .program-summary {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: #fff;
+        padding: 12px 25px;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        border: 1px solid var(--line-dotted);
+        font-size: 1.05rem;
+    }
+    
+    .badge-bachelor {
+        background: #eff6ff;
+        color: #2563eb;
+        padding: 6px 16px;
+        border-radius: 12px;
+        font-weight: 700;
+    }
+    
+    .badge-engineer {
+        background: #faf5ff;
+        color: #9333ea;
+        padding: 6px 16px;
+        border-radius: 12px;
+        font-weight: 700;
+    }
+
+    .total-tc {
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      background: #f1f5f9;
+      padding: 8px 20px;
+      border-radius: 12px;
+    }
+
+    .chart-container {
+      position: relative;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+      width: 100%;
+      max-width: 1600px;
+      overflow-x: auto;
+    }
+
+    .y-axis-title {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 360px repeat(16, minmax(70px, 1fr));
+      gap: 12px 4px;
+      position: relative;
+    }
+
+    .year-label {
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      padding-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .year-line {
+      border-right: 2px solid var(--line-solid);
+      z-index: 1;
+      transform: translateX(2px);
+    }
+
+    .semester-line {
+      border-right: 1.5px dashed var(--line-dotted);
+      z-index: 0;
+      transform: translateX(2px);
+    }
+
+    .row-label {
+      text-align: right;
+      padding-right: 15px;
+      align-self: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      color: var(--text-primary);
+    }
+    
+    .course-code-id {
+      font-family: monospace;
+      background: #f1f5f9;
+      color: #64748b;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      margin-left: 10px;
+      margin-right: 8px;
+    }
+
+    .row-label span.line-dash {
+      display: inline-block;
+      width: 12px;
+      height: 2px;
+      background-color: #cbd5e1;
+    }
+
+    .data-point {
+      align-self: center;
+      justify-self: center;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.06);
+      z-index: 2;
+      text-align: center;
+      min-width: 65px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    
+    .data-point:hover, .data-point.highlighted {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+      filter: brightness(1.1);
+    }
+
+    .grid-layout.has-highlight .data-point:not(.highlighted) {
+      opacity: 0.25;
+      filter: grayscale(0.5);
+    }
+
+    .semester-axis {
+      display: grid;
+      grid-template-columns: 360px repeat(16, minmax(70px, 1fr));
+      gap: 15px 4px;
+      margin-top: 15px;
+    }
+
+    .semester-label {
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .semester-label:hover {
+      background: #f1f5f9;
+      color: var(--text-primary);
+    }
+
+    .semester-label b {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 1.1rem;
+    }
+
+    .semester-label.special-col b {
+      color: #f59e0b;
+    }
+
+    .semester-label::before {
+      content: '';
+      width: 2px;
+      height: 12px;
+      background: var(--line-solid);
+      margin-bottom: 8px;
+    }
+
+    .details-panel {
+      margin-top: 2rem;
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+      width: 100%;
+      max-width: 1600px;
+      border: 1px solid var(--line-dotted);
+      display: none; 
+    }
+
+    .details-panel.active {
+      display: block;
+      animation: slideUp 0.3s ease-out;
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .details-panel h3 {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .details-panel h3 span.hk-total {
+        font-size: 1rem;
+        background: #f8fafc;
+        color: var(--text-secondary);
+        padding: 6px 16px;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 16px;
+    }
+
+    .course-card {
+      background: #f8fafc;
+      padding: 16px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      border-left-width: 6px;
+      border-left-style: solid;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    
+    .course-card:hover {
+      transform: translateX(4px);
+    }
+    
+    .course-title-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .course-card .badge {
+      background: #e2e8f0;
+      color: #334155;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .course-card .badge-dept {
+      background: #eef2ff;
+      color: #4f46e5;
+      font-size: 0.75rem;
+      border: 1px solid #c7d2fe;
+      padding: 2px 8px;
+    }
+
+    .legend-cnpm {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        padding: 8px 18px;
+        border-radius: 12px;
+        border: 2px solid #1e293b;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        animation: glowPulse 2.5s infinite;
+        cursor: pointer;
+        transition: transform 0.2s, background 0.2s;
+    }
+    
+    .legend-cnpm:hover {
+        transform: scale(1.05);
+        background: #f8fafc;
+    }
+    
+    @keyframes glowPulse {
+        0% { box-shadow: 0 0 0 0 rgba(30, 41, 59, 0.2); }
+        70% { box-shadow: 0 0 0 6px rgba(30, 41, 59, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(30, 41, 59, 0); }
+    }
+    
+    .dept-cnpm {
+      border: 3px solid #1e293b;
+      box-shadow: 0 6px 12px rgba(30,41,59,0.2) !important;
+      animation: glowPulse 2.5s infinite;
+      font-weight: 800;
+      transform: scale(1.03);
+      z-index: 5 !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="tabs-container">
+    <button class="tab-btn active" id="btn-ktpm">Kỹ thuật phần mềm (KTPM)</button>
+    <button class="tab-btn" id="btn-httt">Hệ thống thông tin (HTTT)</button>
+    <button class="tab-btn" id="btn-cntt">Công nghệ thông tin chung (CNTT)</button>
+    <button class="tab-btn" id="btn-exclusive">Đặc thù chuyên ngành (KTPM)</button>
+    <button class="tab-btn" id="btn-overlap">Gợi ý Hợp nhất môn</button>
+  </div>
+
+  <div class="top-info">
+      <div class="program-summary">
+         <strong>📊 Tổng kết kỳ vọng:</strong>
+         <span class="badge-bachelor">🎓 Cử nhân: 141 TC</span>
+         <span class="badge-engineer">🎓 Kỹ sư: 171 TC</span>
+      </div>
+      <div class="legend-cnpm" id="legendCnpm" onclick="toggleDeptFilter('CNPM')" title="Bấm vào để Tắt/Môn các môn khác, chỉ giữ lại sơ đồ của CNPM">
+         <span>⭐</span> Môn học do Bộ môn CNPM phụ trách
+      </div>
+      <div class="total-tc" id="totalTcLabel"></div>
+  </div>
+
+  <div class="chart-container">
+    <div class="y-axis-title">Học phần</div>
+    
+    <div class="grid-layout" id="timelineGrid"></div>
+    <div class="semester-axis" id="semesterAxis"></div>
+  </div>
+
+  <div class="details-panel" id="detailsPanel">
+    <h3 id="detailTitle">Chi tiết môn học <span class="hk-total" id="hkTotalLabel">0 TC</span></h3>
+    <div class="course-grid" id="courseList"></div>
+  </div>
+
+  <script>
+    // 1. TỪ ĐIỂN CHUẨN HÓA DỮ LIỆU TẤT CẢ CÁC MÔN
+    const courseCatalog = {
+      // Đại cương
+      "FOL130": { name: "Ngoại ngữ 1", tc: 3, dept: "Khoa học cơ bản" },
+      "FOL131": { name: "Ngoại ngữ 2", tc: 3, dept: "Khoa học cơ bản" },
+      "FOL132": { name: "Ngoại ngữ 3", tc: 3, dept: "Khoa học cơ bản" },
+      "FCI130": { name: "Ngoại ngữ nhóm ngành CNTT", tc: 3, dept: "Khoa học cơ bản" },
+      "POL131": { name: "Triết học Mác - Lênin", tc: 3, dept: "Lý luận chính trị" },
+      "POE121": { name: "Kinh tế chính trị Mác - Lênin", tc: 2, dept: "Lý luận chính trị" },
+      "STS121": { name: "Chủ nghĩa xã hội khoa học", tc: 2, dept: "Lý luận chính trị" },
+      "PHV121": { name: "Lịch sử Đảng CSVN", tc: 2, dept: "Lý luận chính trị" },
+      "HCM120": { name: "Tư tưởng Hồ Chí Minh", tc: 2, dept: "Lý luận chính trị" },
+      "FOL135": { name: "Pháp luật đại cương", tc: 3, dept: "Kinh tế & QT" },
+      "GIS131": { name: "Tin học đại cương", tc: 3, dept: "KHMT" },
+      "MAT140": { name: "Toán cao cấp", tc: 4, dept: "KHMT" },
+      "VLL121": { name: "Vật lý", tc: 2, dept: "Khoa học cơ bản" },
+      "GTC121": { name: "Giáo dục thể chất 1", tc: 2, dept: "Giáo dục thể chất" },
+      "GTC221": { name: "Giáo dục thể chất 2", tc: 2, dept: "Giáo dục thể chất" },
+
+      // Cơ sở ngành
+      "CCI130": { name: "Định hướng nghề nghiệp CNTT", tc: 3, dept: "Khoa CNTT" },
+      "PIN241": { name: "Nhập môn lập trình", tc: 4, dept: "KHMT" },
+      "COA231": { name: "Kiến trúc máy tính", tc: 3, dept: "KHMT" },
+      "OOP231": { name: "Lập trình hướng đối tượng", tc: 3, dept: "CNPM" },
+      "OTS131": { name: "Hệ điều hành", tc: 3, dept: "KTMT" },
+      "BAD131": { name: "Cơ sở dữ liệu", tc: 3, dept: "HTTT" },
+      "CON131": { name: "Mạng máy tính", tc: 3, dept: "M&ATTT" },
+      "WED331": { name: "Thiết kế web", tc: 3, dept: "M&ATTT" },
+      "DEM230": { name: "Toán rời rạc", tc: 3, dept: "KHMT" },
+      "SXT331": { name: "Xác suất thống kê", tc: 3, dept: "KHMT" },
+      "DSA231": { name: "Cấu trúc DL & Thuật toán", tc: 3, dept: "KHMT" },
+      "ASD232": { name: "Phân tích thiết kế hệ thống", tc: 3, dept: "HTTT" },
+      "OAD_TMP": { name: "Phân tích thiết kế HĐT", tc: 3, dept: "Khoa CNTT" },
+      "ADT332": { name: "Công nghệ phát triển ứng dụng", tc: 3, dept: "CNPM" },
+      "SOE232": { name: "Công nghệ phần mềm", tc: 3, dept: "CNPM" },
+      "AMS331": { name: "Phân tích và quản lý yêu cầu", tc: 3, dept: "CNPM" }, 
+
+      // Ngành / Kỹ sư (Từ CTDT.md)
+      "STI331": { name: "CNPM cho hệ thống thông minh", tc: 3, dept: "CNPM" },
+      "KTV332": { name: "Kiến trúc và TK phần mềm", tc: 3, dept: "CNPM" },
+      "LTT332": { name: "Lập trình thiết bị di động", tc: 3, dept: "CNPM" },
+      "JWP331": { name: "Lập trình Java Web", tc: 3, dept: "CNPM" },
+      "KDP231": { name: "Kiểm thử và ĐBCL phần mềm", tc: 3, dept: "CNPM" },
+      "HTD231": { name: "Hệ QTCSDL NoSQL", tc: 3, dept: "HTTT" }, 
+      "OSS431": { name: "Phát triển PM mã nguồn mở", tc: 3, dept: "CNPM" },
+      "BTP330": { name: "Vận hành và bảo trì PM", tc: 3, dept: "CNPM" },
+      "MPS330": { name: "Quản lý dự án phần mềm", tc: 3, dept: "CNPM" },
+      "IDS331": { name: "Thiết kế giao diện phần mềm", tc: 3, dept: "CNPM" },
+      "DAD232": { name: "Phát triền ứng dụng phân tán", tc: 3, dept: "M&ATTT" },
+      "CNM232": { name: "Công nghệ mạng LAN", tc: 3, dept: "M&ATTT" },
+      "NSM330": { name: "Quản trị hệ thống mạng", tc: 3, dept: "M&ATTT" },
+      "CSN331": { name: "Bảo mật hệ thống", tc: 3, dept: "M&ATTT" },
+      "IOP331": { name: "Lập trình IoT", tc: 3, dept: "KTMT" },
+      "MAL332": { name: "Học máy", tc: 3, dept: "KHMT" },
+      "BIA335": { name: "Dữ liệu lớn", tc: 3, dept: "HTTT" }, 
+      "DMS231": { name: "Hệ quản trị CSDL", tc: 3, dept: "HTTT" },
+      "FOD330": { name: "Thiết kế hướng lĩnh vực", tc: 3, dept: "Khoa CNTT" },
+      "DTM331": { name: "Khai phá dữ liệu", tc: 3, dept: "HTTT" },
+      "XDH332": { name: "Xây dựng hệ thống thông tin", tc: 3, dept: "HTTT" },
+      
+      // Chuyên đề chưa mã hóa của HTTT
+      "TC_HTTT_1": { name: "Đi chuyên sâu đg hướng 1", tc: 3, dept: "HTTT" },
+      "TC_HTTT_2": { name: "Đi chuyên sâu đg hướng 2", tc: 3, dept: "HTTT" },
+      "TC_HTTT_3": { name: "Đi chuyên sâu đg hướng 3", tc: 3, dept: "HTTT" },
+
+      "SEL331": { name: "Tự chọn cơ sở 1", tc: 3, dept: "Khoa CNTT" },
+      "SLE332": { name: "Tự chọn cơ sở 2", tc: 3, dept: "Khoa CNTT" },
+      "SLE333": { name: "AT hệ thống công nghệ TT (TC3)", tc: 3, dept: "M&ATTT" }, 
+      "UCS241": { name: "PT ứng dụng chuyên sâu (TC1)", tc: 3, dept: "CNPM" },
+      "DAS331": { name: "Triển khai & QT HT (TC1)", tc: 3, dept: "M&ATTT" },
+      "AIA331": { name: "Ứng dụng trí tuệ NT (TC2)", tc: 3, dept: "KHMT" },
+      "DPT231": { name: "Các HT đa phương tiện (TC2)", tc: 3, dept: "HTTT" },
+      "RMI335": { name: "QL rủi ro & ATTT (TC3)", tc: 3, dept: "M&ATTT" },
+
+      "IPM331": { name: "Quản trị dự án CNTT", tc: 3, dept: "CNPM" },
+      "ITS335": { name: "Quy chuẩn CNTT", tc: 3, dept: "HTTT" },
+      "SRM331": { name: "Phương pháp NCKH", tc: 3, dept: "KHMT" },
+      "WDS333": { name: "An toàn web và CSDL", tc: 3, dept: "M&ATTT" },
+      "CAC331": { name: "PTUD định toán đám mây", tc: 3, dept: "M&ATTT" },
+
+      "EIS431": { name: "Thực tập Doanh nghiệp 1", tc: 3, dept: "Khoa CNTT" },
+      "EIS432": { name: "Thực tập Doanh nghiệp 2", tc: 5, dept: "Khoa CNTT" },
+      "EIS433": { name: "Thực tập Doanh nghiệp 3", tc: 5, dept: "Khoa CNTT" },
+      "EIS434": { name: "Thực tập Doanh nghiệp 4", tc: 7, dept: "Khoa CNTT" },
+      "THS975": { name: "Khóa luận tốt nghiệp", tc: 7, dept: "Khoa CNTT" },
+      "GRA975": { name: "Đồ án tốt nghiệp Kỹ sư", tc: 12, dept: "Khoa CNTT" },
+      "TC_MR": { name: "Tự chọn mở rộng", tc: 3, dept: "Khoa CNTT" }
+    };
+
+    // 2. CẤU TRÚC LỘ TRÌNH CHỈ TRUY CHỨA MÃ HP & HỌC KỲ
+    const currKTPM = [
+      // Đại cương
+      { id: "FOL130", hk: 1 }, { id: "GIS131", hk: 1 }, { id: "MAT140", hk: 1 }, 
+      { id: "FOL131", hk: 2 }, { id: "VLL121", hk: 2 }, { id: "FOL132", hk: 3 }, 
+      { id: "FOL135", hk: 3 }, { id: "FCI130", hk: 4 }, { id: "POL131", hk: 5 }, 
+      { id: "POE121", hk: 6 }, { id: "STS121", hk: 7 }, { id: "PHV121", hk: 8 }, 
+      { id: "HCM120", hk: 9 },
+      // CSN
+      { id: "CCI130", hk: 1 }, { id: "PIN241", hk: 2 }, { id: "COA231", hk: 2 }, 
+      { id: "OOP231", hk: 3 }, { id: "OTS131", hk: 3 }, { id: "BAD131", hk: 4 }, 
+      { id: "CON131", hk: 4 }, { id: "WED331", hk: 4 }, { id: "ASD232", hk: 5 }, 
+      { id: "ADT332", hk: 5 }, { id: "DEM230", hk: 5 }, { id: "SOE232", hk: 6 }, 
+      { id: "DSA231", hk: 6 }, { id: "SXT331", hk: 6 },
+      // Ngành
+      { id: "SEL331", hk: 7 }, { id: "SLE332", hk: 7 }, { id: "STI331", hk: 8 }, 
+      { id: "KTV332", hk: 8 }, { id: "LTT332", hk: 8 }, { id: "KDP231", hk: 9 }, 
+      { id: "JWP331", hk: 9 }, { id: "HTD231", hk: 9 }, { id: "OSS431", hk: 10 }, 
+      { id: "MPS330", hk: 10 }, { id: "IDS331", hk: 10 }, { id: "BTP330", hk: 10 },
+      // TTS
+      { id: "EIS431", hk: 3 }, { id: "EIS432", hk: 6 }, { id: "EIS433", hk: 9 }, 
+      { id: "EIS434", hk: 11 }, { id: "THS975", hk: 12 },
+      // Kỹ sư
+      { id: "IPM331", hk: 13 }, { id: "ITS335", hk: 13 }, { id: "SLE333", hk: 13 }, 
+      { id: "SRM331", hk: 14 }, { id: "WDS333", hk: 14 }, { id: "CAC331", hk: 14 }, 
+      { id: "GRA975", hk: 15 },
+      // Flex
+      { id: "GTC121", hk: 16 }, { id: "GTC221", hk: 16 }, { id: "TC_MR", hk: 16 }
+    ];
+
+    const currCNTT = [
+      { id: "FOL130", hk: 1 }, { id: "GIS131", hk: 1 }, { id: "MAT140", hk: 1 }, 
+      { id: "FOL131", hk: 2 }, { id: "VLL121", hk: 2 }, { id: "FOL132", hk: 3 }, 
+      { id: "FOL135", hk: 3 }, { id: "FCI130", hk: 4 }, { id: "POL131", hk: 5 }, 
+      { id: "POE121", hk: 6 }, { id: "STS121", hk: 7 }, { id: "PHV121", hk: 8 }, 
+      { id: "HCM120", hk: 9 },
+      { id: "CCI130", hk: 1 }, { id: "PIN241", hk: 2 }, { id: "COA231", hk: 2 }, 
+      { id: "OOP231", hk: 3 }, { id: "OTS131", hk: 3 }, { id: "BAD131", hk: 4 }, 
+      { id: "CON131", hk: 4 }, { id: "WED331", hk: 4 }, { id: "DEM230", hk: 5 }, 
+      { id: "OAD_TMP", hk: 5 }, { id: "ADT332", hk: 5 }, { id: "SXT331", hk: 6 }, 
+      { id: "DSA231", hk: 6 }, { id: "SOE232", hk: 6 },
+      { id: "SEL331", hk: 7 }, { id: "SLE332", hk: 7 }, { id: "DAD232", hk: 8 }, 
+      { id: "CNM232", hk: 8 }, { id: "AMS331", hk: 8 }, { id: "NSM330", hk: 9 }, 
+      { id: "FOD330", hk: 9 }, { id: "LTT332", hk: 9 }, { id: "CSN331", hk: 10 }, 
+      { id: "IOP331", hk: 10 }, { id: "KDP231", hk: 10 }, { id: "MPS330", hk: 10 },
+      { id: "EIS431", hk: 3 }, { id: "EIS432", hk: 6 }, { id: "EIS433", hk: 9 }, 
+      { id: "EIS434", hk: 11 }, { id: "THS975", hk: 12 },
+      { id: "IPM331", hk: 13 }, { id: "ITS335", hk: 13 }, { id: "SLE333", hk: 13 }, 
+      { id: "SRM331", hk: 14 }, { id: "MAL332", hk: 14 }, { id: "BIA335", hk: 14 }, 
+      { id: "GRA975", hk: 15 },
+      { id: "GTC121", hk: 16 }, { id: "GTC221", hk: 16 }, { id: "TC_MR", hk: 16 }
+    ];
+
+    const currHTTT = [
+      { id: "FOL130", hk: 1 }, { id: "GIS131", hk: 1 }, { id: "MAT140", hk: 1 }, 
+      { id: "FOL131", hk: 2 }, { id: "VLL121", hk: 2 }, { id: "FOL132", hk: 3 }, 
+      { id: "FOL135", hk: 3 }, { id: "FCI130", hk: 4 }, { id: "POL131", hk: 5 }, 
+      { id: "POE121", hk: 6 }, { id: "STS121", hk: 7 }, { id: "PHV121", hk: 8 }, 
+      { id: "HCM120", hk: 9 },
+      { id: "CCI130", hk: 1 }, { id: "PIN241", hk: 2 }, { id: "COA231", hk: 2 }, 
+      { id: "OOP231", hk: 3 }, { id: "OTS131", hk: 3 }, { id: "BAD131", hk: 4 }, 
+      { id: "CON131", hk: 4 }, { id: "DEM230", hk: 5 }, { id: "OAD_TMP", hk: 5 }, 
+      { id: "ADT332", hk: 5 }, { id: "SXT331", hk: 6 }, { id: "DSA231", hk: 6 }, 
+      { id: "SOE232", hk: 6 }, { id: "AMS331", hk: 6 }, 
+      { id: "KTV332", hk: 7 }, { id: "SEL331", hk: 7 }, { id: "SLE332", hk: 7 }, 
+      { id: "TC_HTTT_1", hk: 8 }, { id: "TC_HTTT_2", hk: 8 }, { id: "DMS231", hk: 8 }, 
+      { id: "FOD330", hk: 9 }, { id: "TC_HTTT_3", hk: 9 }, { id: "HTD231", hk: 9 }, 
+      { id: "IDS331", hk: 10 }, { id: "DTM331", hk: 10 }, { id: "MPS330", hk: 10 }, 
+      { id: "XDH332", hk: 10 },
+      { id: "EIS431", hk: 3 }, { id: "EIS432", hk: 6 }, { id: "EIS433", hk: 9 }, 
+      { id: "EIS434", hk: 11 }, { id: "THS975", hk: 12 },
+      { id: "IPM331", hk: 13 }, { id: "SLE333", hk: 13 }, { id: "ITS335", hk: 13 }, 
+      { id: "SRM331", hk: 14 }, { id: "WDS333", hk: 14 }, { id: "CAC331", hk: 14 }, 
+      { id: "GRA975", hk: 15 },
+      { id: "GTC121", hk: 16 }, { id: "GTC221", hk: 16 }, { id: "TC_MR", hk: 16 }
+    ];
+
+    const overlapMapping = {
+      // Cụm 1: Nền tảng Web & Ứng dụng
+      "ADT332": "Cụm 1: Hợp nhất Thiết kế Web & Ứng dụng", 
+      "JWP331": "Cụm 1: Hợp nhất Thiết kế Web & Ứng dụng", 
+      "WED331": "Cụm 1: Hợp nhất Thiết kế Web & Ứng dụng",
+
+      // Cụm 2: Phân tích & Thiết kế HT
+      "ASD232": "Cụm 2: Hợp nhất Phân tích Thiết kế HT", 
+      "OAD_TMP": "Cụm 2: Hợp nhất Phân tích Thiết kế HT", 
+      "KTV332": "Cụm 2: Hợp nhất Phân tích Thiết kế HT",
+      
+      // Cụm 3: App Nâng cao / Phân tán
+      "UCS241": "Cụm 3: Hợp nhất Lập trình Ứng dụng Nâng cao", 
+      "DAD232": "Cụm 3: Hợp nhất Lập trình Ứng dụng Nâng cao",
+
+      // Cụm 4: Quản trị CSDL
+      "DMS231": "Cụm 4: Hợp nhất Hệ QT CSDL Cốt lõi", 
+      "HTD231": "Cụm 4: Hợp nhất Hệ QT CSDL Cốt lõi",
+      
+      // Cụm 5: Quản trị Dự án phần mềm
+      "MPS330": "Cụm 5: Hợp nhất Quản lý Dự án IT", 
+      "IPM331": "Cụm 5: Hợp nhất Quản lý Dự án IT",
+      
+      // Cụm 6: Bảo mật
+      "CSN331": "Cụm 6: Hợp nhất Chuyên đề Bảo mật Hệ thống",
+      "SLE333": "Cụm 6: Hợp nhất Chuyên đề Bảo mật Hệ thống",
+      "WDS333": "Cụm 6: Hợp nhất Chuyên đề Bảo mật Hệ thống"
+    };
+
+    const overlapColors = {
+        "Cụm 1: Hợp nhất Thiết kế Web & Ứng dụng": "#e11d48", // Rose Red
+        "Cụm 2: Hợp nhất Phân tích Thiết kế HT": "#8b5cf6", // Violet
+        "Cụm 3: Hợp nhất Lập trình Ứng dụng Nâng cao": "#0ea5e9", // Sky
+        "Cụm 4: Hợp nhất Hệ QT CSDL Cốt lõi": "#f59e0b", // Amber
+        "Cụm 5: Hợp nhất Quản lý Dự án IT": "#ec4899", // Pink
+        "Cụm 6: Hợp nhất Chuyên đề Bảo mật Hệ thống": "#14b8a6" // Teal
+    };
+
+    let currentTab = 'KTPM';
+
+    function getColorForHK(hk, groupName) {
+      if (currentTab === 'OVERLAP' && groupName) return overlapColors[groupName] || "#3b82f6";
+      
+      if (hk <= 3) return "#f97316"; 
+      if (hk <= 6) return "#ef4444"; 
+      if (hk <= 9) return "#0ea5e9"; 
+      if (hk <= 12) return "#3b82f6"; 
+      if (hk <= 15) return "#10b981"; 
+      return "#f59e0b"; 
+    }
+
+    const electiveUnpackData = {
+        "SEL331": ["DAS331", "UCS241"],
+        "SLE332": ["AIA331", "DPT231"],
+        "SLE333": ["ITS435", "RMI335"],
+        "TC_HTTT_1": ["DAS331", "UCS241"],
+        "TC_HTTT_2": ["AIA331", "DPT231"],
+        "TC_HTTT_3": ["ITS435", "RMI335"]
+    };
+
+    const extraDict = {
+        "DAS331": { name: "Triển khai & quản trị HT", tc: 3, dept: "M&ATTT" },
+        "UCS241": { name: "PT ứng dụng chuyên sâu", tc: 3, dept: "CNPM" },
+        "AIA331": { name: "Ứng dụng AI", tc: 3, dept: "Khoa CNTT" },
+        "DPT231": { name: "Hệ thống đa phương tiện", tc: 3, dept: "Khoa CNTT" },
+        "ITS435": { name: "An toàn hệ thống CNTT", tc: 3, dept: "M&ATTT" },
+        "RMI335": { name: "Quản lý rủi ro & ATTT", tc: 3, dept: "M&ATTT" },
+        "BLT331": { name: "Công nghệ Blockchain", tc: 3, dept: "Khoa CNTT" }
+    };
+
+    // Biến đổi cấu trúc mảng logic để lấy Info từ Master Catalog
+    function getProcessedData() {
+      let activeList = [];
+      if (currentTab === 'KTPM') activeList = currKTPM;
+      else if (currentTab === 'CNTT') activeList = currCNTT;
+      else if (currentTab === 'HTTT') activeList = currHTTT;
+      else if (currentTab === 'EXCLUSIVE') {
+         const cnttIds = new Set(currCNTT.map(c => c.id));
+         const htttIds = new Set(currHTTT.map(c => c.id));
+         // Toán học tập hợp: Rút các môn chỉ tồn tại trong KTPM mà không có ở CNTT & HTTT
+         activeList = currKTPM.filter(c => !cnttIds.has(c.id) && !htttIds.has(c.id));
+      }
+      else if (currentTab === 'OVERLAP') {
+         const allArrays = [...currKTPM, ...currCNTT, ...currHTTT];
+         
+         const dedup = {};
+         allArrays.forEach(c => {
+             // Nếu c.id là cụm tự chọn, nạp cả các con của nó vào
+             if (electiveUnpackData[c.id]) {
+                 electiveUnpackData[c.id].forEach(optId => {
+                     if (overlapMapping[optId] && !dedup[optId]) {
+                         dedup[optId] = { id: optId, hk: c.hk, group: overlapMapping[optId] };
+                     }
+                 });
+             } else {
+                 if (overlapMapping[c.id] && !dedup[c.id]) {
+                     dedup[c.id] = { id: c.id, hk: c.hk, group: overlapMapping[c.id] };
+                 }
+             }
+         });
+         activeList = Object.values(dedup);
+      }
+      
+      // Unpack các placeholder tự chọn thành môn thực tế trên các Tab thường
+      let flatList = [];
+      if (currentTab !== 'OVERLAP') {
+          activeList.forEach(item => {
+             if (electiveUnpackData[item.id]) {
+                 electiveUnpackData[item.id].forEach((optId, idx) => {
+                     flatList.push({ id: optId, hk: item.hk, isDup: idx > 0, optionGroup: item.id });
+                 });
+             } else {
+                 flatList.push({ ...item, isDup: false });
+             }
+          });
+      } else {
+          flatList = activeList.map(item => ({ ...item, isDup: false }));
+      }
+      
+      const hydrated = flatList.map(item => {
+        const detail = courseCatalog[item.id] || extraDict[item.id] || { name: item.id, tc: 3, dept: "N/A" };
+        return {
+           id: item.id,
+           name: detail.name,
+           tc: detail.tc,
+           hk: item.hk,
+           dept: detail.dept,
+           group: item.group || null,
+           isDup: item.isDup
+        };
+      });
+
+      if (currentTab === 'OVERLAP') {
+          return hydrated.sort((a,b) => a.group.localeCompare(b.group) || a.hk - b.hk);
+      }
+      return hydrated.sort((a,b) => a.hk - b.hk || a.name.localeCompare(b.name));
+    }
+
+    function showSemesterDetails(hk) {
+      const data = getProcessedData();
+      const hkCourses = data.filter(c => c.hk === hk);
+      const semTotalTc = hkCourses.reduce((sum, current) => sum + current.tc, 0);
+
+      const panel = document.getElementById("detailsPanel");
+      const title = document.getElementById("detailTitle");
+      const list = document.getElementById("courseList");
+      
+      if(hk < 16) {
+          const year = Math.ceil(hk / 3);
+          title.innerHTML = `Danh sách môn học - HK${hk} (Năm ${year}) <span class="hk-total" id="hkTotalLabel">Tổng: ${semTotalTc} Tín chỉ</span>`;
+      } else {
+          title.innerHTML = `Các Học phần Tự do (Chưa quy định HK) <span class="hk-total" id="hkTotalLabel">Tổng: ${semTotalTc} Tín chỉ</span>`;
+      }
+      
+      list.innerHTML = "";
+      
+      hkCourses.forEach(c => {
+        let deptBadge = c.dept ? `<span class="badge badge-dept">${c.dept}</span>` : '';
+
+        const item = document.createElement('div');
+        item.className = 'course-card';
+        item.style.borderLeftColor = getColorForHK(hk);
+        item.innerHTML = `
+            <div class="course-title-group">
+                <span class="course-code-id">${c.id}</span>
+                <span>${c.name}</span>
+                ${deptBadge}
+            </div>
+            <span class="badge">${c.tc} TC</span>
+        `;
+        list.appendChild(item);
+      });
+      
+      panel.classList.add("active");
+      
+      const grid = document.getElementById("timelineGrid");
+      grid.classList.add("has-highlight");
+      
+      document.querySelectorAll('.data-point').forEach(el => {
+        if(el.dataset.hk == hk) el.classList.add("highlighted");
+        else el.classList.remove("highlighted");
+      });
+
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    let deptFilterActive = false;
+
+    function toggleDeptFilter(deptName) {
+        deptFilterActive = !deptFilterActive;
+        const legendBtn = document.getElementById("legendCnpm");
+        
+        if (deptFilterActive) {
+            legendBtn.style.background = "#eef2ff";
+            legendBtn.style.color = "#4f46e5";
+            legendBtn.style.borderColor = "#4f46e5";
+            
+            document.querySelectorAll('.data-point').forEach(el => {
+                if(el.dataset.dept !== deptName) el.style.display = 'none';
+            });
+            document.querySelectorAll('.row-label').forEach(el => {
+                if(el.dataset.dept !== deptName) el.style.display = 'none';
+            });
+            
+            document.getElementById("detailsPanel").classList.remove("active");
+            document.getElementById("timelineGrid").classList.remove("has-highlight");
+        } else {
+            legendBtn.style.background = "";
+            legendBtn.style.color = "";
+            legendBtn.style.borderColor = "";
+            
+            document.querySelectorAll('.data-point').forEach(el => el.style.display = '');
+            document.querySelectorAll('.row-label').forEach(el => el.style.display = '');
+        }
+    }
+
+    function renderTimeline() {
+      deptFilterActive = false;
+      const legendBtn = document.getElementById("legendCnpm");
+      if(legendBtn) {
+          legendBtn.style.background = "";
+          legendBtn.style.color = "";
+          legendBtn.style.borderColor = "";
+      }
+
+      const data = getProcessedData();
+      const grid = document.getElementById("timelineGrid");
+      const axis = document.getElementById("semesterAxis");
+
+      // Valid total Logic - ignore duplicate options
+      const validForGraduation = data.filter(c => !c.name.includes("Giáo dục thể chất") && !c.name.includes("Tự chọn mở rộng") && !c.isDup);
+      const bachelorTc = validForGraduation.filter(c => c.hk <= 12).reduce((sum, c) => sum + c.tc, 0);
+      const totalAllTc = validForGraduation.reduce((sum, c) => sum + c.tc, 0);
+      
+      if (currentTab === 'OVERLAP') {
+          document.getElementById('totalTcLabel').innerText = `(Chế độ Gợi ý Hợp nhất nội dung: Lọc ra các nhóm môn tương đồng)`;
+      } else {
+          document.getElementById('totalTcLabel').innerText = `(Chiết xuất tự động: Cử nhân ${bachelorTc} TC, Kỹ sư ${totalAllTc} TC - Trừ khối GDTC/Bổ trợ)`;
+      }
+
+      // Thống kê động số môn của Bộ môn CNPM
+      if (currentTab !== 'OVERLAP') {
+          const cnpmCourses = data.filter(c => c.dept === "CNPM");
+          
+          const bachelorCnpm = cnpmCourses.filter(c => c.hk <= 12);
+          const bCount = bachelorCnpm.length;
+          const bTc = bachelorCnpm.reduce((sum, c) => sum + c.tc, 0);
+
+          const engineerCnpm = cnpmCourses.filter(c => c.hk >= 13);
+          const eCount = engineerCnpm.length;
+          const eTc = engineerCnpm.reduce((sum, c) => sum + c.tc, 0);
+
+          document.getElementById('legendCnpm').innerHTML = `<span>⭐</span> Bộ môn CNPM quản lý: <strong>Cử nhân ${bCount} môn (${bTc} TC) &nbsp;|&nbsp; Kỹ sư ${eCount} môn (${eTc} TC)</strong>`;
+      } else {
+          document.getElementById('legendCnpm').innerHTML = `<span>⭐</span> Phân bổ Đề xuất Hợp nhất Lưới`;
+      }
+
+      grid.innerHTML = '';
+      grid.classList.remove("has-highlight");
+      document.getElementById("detailsPanel").classList.remove("active");
+      
+      axis.innerHTML = '<div style="grid-column: 1;"></div>';
+
+      const years = ['2024-2025', '2025-2026', '2026-2027', '2027-2028', '2028-2029', 'Khác'];
+      for(let i=0; i<6; i++) {
+        let yLabel = document.createElement("div");
+        yLabel.className = "year-label";
+        if (i < 5) {
+            yLabel.style.gridColumn = `${(i*3)+2} / span 3`;
+        } else {
+            yLabel.style.gridColumn = `17`;
+        }
+        yLabel.style.gridRow = "1";
+        yLabel.innerText = years[i];
+        grid.appendChild(yLabel);
+      }
+      
+      const tlDataLen = data.length;
+      
+      for(let i = 1; i <= 16; i++) {
+        const div = document.createElement("div");
+        div.style.gridColumn = i + 1;
+        div.style.gridRow = `2 / span ${tlDataLen}`;
+        if(i % 3 === 0 && i !== 15 && i < 16) {
+          div.className = "year-line";
+        } else {
+          div.className = "semester-line";
+        }
+        grid.appendChild(div);
+      }
+
+      data.forEach((c, index) => {
+        const rowNum = index + 2; 
+        
+        const labelDiv = document.createElement("div");
+        labelDiv.className = "row-label";
+        labelDiv.dataset.dept = c.dept || '';
+        labelDiv.style.gridRow = rowNum;
+        labelDiv.style.gridColumn = 1;
+        
+        let cnIcon = '';
+        if (c.dept === "CNPM") {
+           cnIcon = '<span title="Bộ môn CNPM phụ trách" style="margin-left: 5px; font-size: 1rem">⭐</span>';
+        }
+
+        let groupBadge = '';
+        if (c.group) {
+           groupBadge = `<span class="badge" style="background:${overlapColors[c.group]}20; color:${overlapColors[c.group]}; margin-right:8px; font-size:0.75rem; padding: 3px 8px; border:1px solid ${overlapColors[c.group]}30">${c.group}</span>`;
+        }
+
+        let optBadge = c.isDup !== undefined && currentTab !== 'OVERLAP' && ['DAS331','UCS241','AIA331','DPT231','ITS435','RMI335'].includes(c.id) 
+            ? `<span class="badge" style="background:#e2e8f0; color:#475569; margin-right:4px;">(Môn tự chọn)</span>` 
+            : '';
+            
+        let displayId = c.id;
+        if (currentTab === 'OVERLAP') {
+            displayId = c.dept === 'Khoa CNTT' ? 'F.CNTT' : (c.dept || 'Chưa rõ');
+        }
+        
+        labelDiv.innerHTML = `${groupBadge} <span class="course-code-id" style="font-weight: 500; ${currentTab === 'OVERLAP' ? 'background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1' : ''}">${displayId}</span> ${optBadge}<span style="${c.dept === 'CNPM' ? 'font-weight: 700; color: #1e293b' : ''}">${c.name}</span> ${cnIcon} <span class="line-dash"></span>`;
+        grid.appendChild(labelDiv);
+
+        const pointDiv = document.createElement("div");
+        pointDiv.className = "data-point";
+        if (c.dept === "CNPM") pointDiv.classList.add("dept-cnpm");
+        pointDiv.dataset.hk = c.hk;  
+        pointDiv.dataset.dept = c.dept || '';
+        pointDiv.style.gridRow = rowNum;
+        pointDiv.style.gridColumn = c.hk + 1;
+        pointDiv.style.backgroundColor = getColorForHK(c.hk, c.group);
+        pointDiv.innerHTML = `${c.tc}`; 
+        pointDiv.title = `${c.name} (${c.tc} TC)`;
+        pointDiv.onclick = () => showSemesterDetails(c.hk);
+        grid.appendChild(pointDiv);
+      });
+
+      const populatedSemesters = new Set(data.map(c => c.hk));
+      for (let i = 1; i <= 16; i++) {
+        const axisDiv = document.createElement("div");
+        axisDiv.style.gridColumn = i + 1;
+        if (populatedSemesters.has(i)) {
+          axisDiv.className = "semester-label";
+          if (i === 16) {
+              axisDiv.classList.add("special-col");
+              axisDiv.innerHTML = `<b>Linh động</b>`;
+          } else {
+              axisDiv.innerHTML = `<b>HK${i}</b>`;
+          }
+          axisDiv.title = `Nhấn để xem chi tiết danh sách học kỳ này`;
+          axisDiv.onclick = () => showSemesterDetails(i);
+        }
+        axis.appendChild(axisDiv);
+      }
+      
+      document.getElementById('btn-ktpm').classList.toggle('active', currentTab === 'KTPM');
+      document.getElementById('btn-cntt').classList.toggle('active', currentTab === 'CNTT');
+      document.getElementById('btn-httt').classList.toggle('active', currentTab === 'HTTT');
+      document.getElementById('btn-exclusive').classList.toggle('active', currentTab === 'EXCLUSIVE');
+      document.getElementById('btn-overlap').classList.toggle('active', currentTab === 'OVERLAP');
+    }
+
+    document.getElementById('btn-ktpm').onclick = () => { currentTab = 'KTPM'; renderTimeline(); };
+    document.getElementById('btn-cntt').onclick = () => { currentTab = 'CNTT'; renderTimeline(); };
+    document.getElementById('btn-httt').onclick = () => { currentTab = 'HTTT'; renderTimeline(); };
+    document.getElementById('btn-exclusive').onclick = () => { currentTab = 'EXCLUSIVE'; renderTimeline(); };
+    document.getElementById('btn-overlap').onclick = () => { currentTab = 'OVERLAP'; renderTimeline(); };
+
+    renderTimeline();
+    
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.data-point') && 
+            !e.target.closest('.semester-label') && 
+            !e.target.closest('.details-panel') && 
+            !e.target.closest('.legend-cnpm')) {
+           document.getElementById("timelineGrid").classList.remove("has-highlight");
+           document.getElementById("detailsPanel").classList.remove("active");
+        }
+    });
+  </script>
+</body>
+</html>
