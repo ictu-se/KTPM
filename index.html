@@ -656,6 +656,23 @@
         "BLT331": { name: "Công nghệ Blockchain", tc: 3, dept: "Khoa CNTT" }
     };
 
+    const cnpmTeachers = {
+        "OOP231": "P.Thương",
+        "ADT332": "T.Phương",
+        "SOE232": "N.Dung",
+        "UCS241": "T.Vịnh",
+        "STI331": "N.Dung",
+        "KTV332": "T.Hải",
+        "LTT332": "N.Phương",
+        "JWP331": "H.Nguyên",
+        "KDP231": "L.Oanh",
+        "OSS431": "Đ.Quang",
+        "BTP330": "P.Thương",
+        "MPS330": "T.Hải",
+        "IDS331": "T.Phương",
+        "IPM331": "T.Hải"
+    };
+
     // Biến đổi cấu trúc mảng logic để lấy Info từ Master Catalog
     function getProcessedData() {
       let activeList = [];
@@ -916,8 +933,15 @@
         pointDiv.style.gridRow = rowNum;
         pointDiv.style.gridColumn = c.hk + 1;
         pointDiv.style.backgroundColor = getColorForHK(c.hk, c.group);
-        pointDiv.innerHTML = `${c.tc}`; 
-        pointDiv.title = `${c.name} (${c.tc} TC)`;
+        
+        if (c.dept === "CNPM" && cnpmTeachers[c.id]) {
+            pointDiv.innerHTML = `<span style="font-size:0.65rem; line-height: 1.1; padding: 0 2px; text-align: center; display: inline-block;">${cnpmTeachers[c.id]}</span>`;
+            pointDiv.title = `${c.name} (${c.tc} TC) - GV: ${cnpmTeachers[c.id]}`;
+        } else {
+            pointDiv.innerHTML = `${c.tc}`; 
+            pointDiv.title = `${c.name} (${c.tc} TC)`;
+        }
+        
         pointDiv.onclick = () => showSemesterDetails(c.hk);
         grid.appendChild(pointDiv);
       });
