@@ -935,8 +935,8 @@
         pointDiv.style.backgroundColor = getColorForHK(c.hk, c.group);
         
         if (c.dept === "CNPM" && cnpmTeachers[c.id]) {
-            pointDiv.innerHTML = `<span style="font-size:0.65rem; line-height: 1.1; padding: 0 2px; text-align: center; display: inline-block;">${cnpmTeachers[c.id]}</span>`;
-            pointDiv.title = `${c.name} (${c.tc} TC) - GV: ${cnpmTeachers[c.id]}`;
+            pointDiv.innerHTML = `<span style="font-size:0.65rem; line-height: 1.1; padding: 0 2px; text-align: center; display: inline-block;">${cnpmTeachers[c.id].short}</span>`;
+            pointDiv.title = `${c.name} (${c.tc} TC) - GV: ${cnpmTeachers[c.id].full}`;
         } else {
             pointDiv.innerHTML = `${c.tc}`; 
             pointDiv.title = `${c.name} (${c.tc} TC)`;
