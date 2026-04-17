@@ -922,12 +922,23 @@
             displayId = c.dept === 'Khoa CNTT' ? 'F.CNTT' : (c.dept || 'Chưa rõ');
         }
         
-        labelDiv.innerHTML = `${groupBadge} <span class="course-code-id" style="font-weight: 500; ${currentTab === 'OVERLAP' ? 'background: #f1f5f9; color: #334155; border: 1px solid #cbd5e1' : ''}">${displayId}</span> ${optBadge}<span style="${c.dept === 'CNPM' ? 'font-weight: 700; color: #1e293b' : ''}">${c.name}</span> ${cnIcon} <span class="line-dash"></span>`;
+        let isCNPM = c.dept === 'CNPM';
+        let fontWeight = isCNPM ? '800' : '400';
+        let fontColor = isCNPM ? '#0f172a' : '#94a3b8';
+        let idColor = isCNPM ? '#334155' : '#cbd5e1';
+        let bgStyleOverlap = `background: ${isCNPM ? '#f1f5f9' : '#f8fafc'}; color: ${isCNPM ? '#334155' : '#94a3b8'}; border: 1px solid ${isCNPM ? '#94a3b8' : '#e2e8f0'}`;
+
+        labelDiv.innerHTML = `${groupBadge} <span class="course-code-id" style="font-weight: 500; ${currentTab === 'OVERLAP' ? bgStyleOverlap : `color: ${isCNPM ? '#334155' : '#94a3b8'}; background: ${isCNPM ? '#f1f5f9' : '#f8fafc'}; border: 1px solid ${isCNPM ? '#e2e8f0' : 'transparent'}` }">${displayId}</span> ${optBadge}<span style="font-weight: ${fontWeight}; color: ${fontColor}; transition: all 0.3s">${c.name}</span> ${cnIcon} <span class="line-dash" style="opacity: ${isCNPM ? 1 : 0.3}"></span>`;
         grid.appendChild(labelDiv);
 
         const pointDiv = document.createElement("div");
         pointDiv.className = "data-point";
-        if (c.dept === "CNPM") pointDiv.classList.add("dept-cnpm");
+        if (isCNPM) {
+            pointDiv.classList.add("dept-cnpm");
+        } else {
+            pointDiv.style.opacity = "0.5";
+            pointDiv.style.filter = "grayscale(50%)";
+        }
         pointDiv.dataset.hk = c.hk;  
         pointDiv.dataset.dept = c.dept || '';
         pointDiv.style.gridRow = rowNum;
